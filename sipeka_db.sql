@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2023 at 11:02 AM
+-- Generation Time: Feb 20, 2023 at 07:27 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 7.4.27
 
@@ -49,19 +49,9 @@ CREATE TABLE `cuti` (
   `nama_ketua` varchar(255) DEFAULT NULL,
   `nip_ketua` varchar(255) DEFAULT NULL,
   `surat` varchar(255) DEFAULT NULL,
-  `status` enum('USULAN','DITERIMA','DITOLAK') DEFAULT 'USULAN'
+  `validasi_admin` enum('USULAN','DITERIMA','DITOLAK') DEFAULT 'USULAN',
+  `validasi_ketua` enum('USULAN','DITERIMA','DITOLAK') DEFAULT 'USULAN'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `cuti`
---
-
-INSERT INTO `cuti` (`id`, `nip`, `nama`, `masakerja`, `alasan`, `tanggal`, `kodecuti`, `jabatan`, `lamacuti`, `pakai1`, `pakai2`, `pakai3`, `daritgl`, `sampaitgl`, `alamat`, `no_telp`, `nama_penyetuju`, `nip_penyetuju`, `nama_ketua`, `nip_ketua`, `surat`, `status`) VALUES
-(3, '198701142006041001', 'NOOR SYARIF', '16', 'Urusan Keluarga', '2023-01-10', '2023-01-10-198701142006041001', 'Pengelola BMN', 2, 0, 0, 2, '2023-01-23', '2023-01-24', 'Jl. Pendidikan Martapura', '852', '', '0', 'ITA WIDYANINGSIH, S.H., M.H.', '197606172000032002', '', 'DITERIMA'),
-(4, '198701142006041001', 'NOOR SYARIF', '16', 'cuti tahun baru ', '2023-01-25', '2023-01-25-198701142006041001', 'Pengelola BMN', 3, 0, 0, 3, '2023-01-26', '2023-01-28', 'rumah', '1232123223', '', '0', 'ITA WIDYANINGSIH, S.H., M.H.', '197606172000032002', '', 'DITERIMA'),
-(5, '198701142006041001', 'NOOR SYARIF', '16', 'dadjaoijdad', '2024-01-18', '2023-01-30-198701142006041001', 'Pengelola BMN', 4, 0, 0, 4, '2023-02-01', '2023-02-07', 'dapkdpaod', '13131313', '', '0', 'ITA WIDYANINGSIH, S.H., M.H.', '197606172000032002', '', 'DITERIMA'),
-(6, '12312213123', 'Roman Zidan Ramadhann', '5', 'tes', '2023-02-15', '2023-02-15-12312213123', 'Mahasiswa', 9, 3, 2, 4, '2023-02-17', '2023-02-25', 'tes', '081231244124', '', NULL, 'ITA WIDYANINGSIH, S.H., M.H.', '197606172000032002', NULL, 'DITOLAK'),
-(8, 'ancah', 'Ancah SInaga', '12', 'ini hanya alasan', '2023-02-16', '2023-02-16-ancah', 'Mahasiswa', 10, 5, 3, 2, '2023-02-16', '2023-02-18', 'tes', 'tes', '', '', 'ITA WIDYANINGSIH, S.H., M.H.', '197606172000032002', NULL, 'DITERIMA');
 
 -- --------------------------------------------------------
 
@@ -78,13 +68,6 @@ CREATE TABLE `jatah_cuti` (
   `sisa3` int(11) NOT NULL,
   `totalcuti` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `jatah_cuti`
---
-
-INSERT INTO `jatah_cuti` (`id`, `nip`, `nama`, `sisa1`, `sisa2`, `sisa3`, `totalcuti`) VALUES
-(5, 'ancah', 'Ancah SInaga', 7, 9, 10, 10);
 
 -- --------------------------------------------------------
 
@@ -109,13 +92,6 @@ CREATE TABLE `pegawai` (
   `ttd` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `pegawai`
---
-
-INSERT INTO `pegawai` (`id`, `nip`, `nama`, `pangkat`, `jabatan`, `ruangan`, `masa_kerja`, `tgl_pengangkatan`, `tmt_pkt_terakhir`, `pangkat_berikutnya`, `periode_pkt_berikutnya`, `tmt_gajiterakhir`, `foto`, `ttd`) VALUES
-(7, 'ancah', 'Ancah Ternaga', 'Penata Muda TK I / (III/b)', 'Mahasiswa Abadi', 'IX C', '12', '2023-02-16', '2023-02-18', 'Penata / (III/c)', '2027-02-18', '2023-02-22', '71830-ancah.jpg', '70179-ancah.png');
-
 -- --------------------------------------------------------
 
 --
@@ -136,15 +112,6 @@ CREATE TABLE `sk_pangkat` (
   `status` varchar(255) NOT NULL,
   `file_sk_pdf` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `sk_pangkat`
---
-
-INSERT INTO `sk_pangkat` (`id_pangkat`, `id_usul_pangkat`, `no_sk`, `tgl_sk`, `nip`, `pangkat_lama`, `tmt_pangkat_lama`, `pangkat_baru`, `tmt_pangkat_baru`, `periode_berikutnya`, `status`, `file_sk_pdf`) VALUES
-(1, 1, 'W15.U/333/KP.05/2023', '2023-04-01', '198410072008052001', 'Penata Muda TK I / (III/b)', '2019-04-01', 'Penata / (III/c)', '2023-04-01', '2027-04-01', 'Selesai', NULL),
-(2, 2, 'tesss', '2023-02-13', '199307032019031005', 'Penata / (II/c)', '2019-04-01', 'Penata TK I / (III/d)', '2023-02-08', '2023-02-10', 'Selesai', NULL),
-(4, 5, 'ISDKOADJ/1203912', '2023-02-13', '12312213123', 'Pengatur / (II/c)', '2023-02-12', 'Pembina TK I / (IV/b)', '2023-02-24', '2023-11-21', 'Selesai', '69424-ISDKOADJ/1203912.pdf');
 
 -- --------------------------------------------------------
 
@@ -179,7 +146,7 @@ CREATE TABLE `users` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `avatar` varchar(255) DEFAULT NULL,
-  `role` enum('admin','user') NOT NULL DEFAULT 'user'
+  `role` enum('admin','user','ketua') NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -187,8 +154,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nama`, `nip_pegawai`, `username`, `password`, `avatar`, `role`) VALUES
-(1, 'Administratorr', '99999999', 'admin', '$2y$10$EkYo02at3KEvwf9ttMKgPemGXCxHG2gRQVc9x4/wSZOw0jjR4ibmq', '9117-admin.jpg', 'admin'),
-(2, 'Ancah Ternaga', 'ancah', 'ancah', '$2y$10$bTB7qv1W.QEU79a52mVy8ugP1ifwbdG9VFdJhr4GxYKdMQaAAzSFC', '71830-ancah.jpg', 'user');
+(1, 'Administratorr', '99999999', 'admin', '$2y$10$EkYo02at3KEvwf9ttMKgPemGXCxHG2gRQVc9x4/wSZOw0jjR4ibmq', '9117-admin.jpg', 'admin');
 
 -- --------------------------------------------------------
 
@@ -208,14 +174,6 @@ CREATE TABLE `usul_pangkat` (
   `status` varchar(255) DEFAULT NULL,
   `file_usul_pdf` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `usul_pangkat`
---
-
-INSERT INTO `usul_pangkat` (`id_usul_pangkat`, `no_surat`, `tgl_surat`, `nip`, `pangkat_terakhir`, `tmt_pangkat_terakhir`, `pangkat_usulan`, `periode_usulan`, `status`, `file_usul_pdf`) VALUES
-(1, 'W15.U3/101/KP/2023', '2023-01-10', '198410072008052001', 'Penata Muda TK I / (III/b)', '2019-04-01', 'Penata Muda TK I / (III/b)', '2023-04-01', 'Selesai', NULL),
-(5, 'A4V3AAD', '2023-02-13', '12312213123', 'Pengatur / (II/c)', '2023-02-12', 'Pengatur Muda / (II/a)', '2023-02-15', 'Selesai', '1858-A4V3AAD.pdf');
 
 --
 -- Indexes for dumped tables
@@ -283,7 +241,7 @@ ALTER TABLE `jatah_cuti`
 -- AUTO_INCREMENT for table `pegawai`
 --
 ALTER TABLE `pegawai`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `sk_pangkat`
@@ -301,7 +259,7 @@ ALTER TABLE `ttd`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `usul_pangkat`
