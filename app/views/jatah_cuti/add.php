@@ -1,5 +1,11 @@
 <?php require APPROOT . '/views/layouts/header.php'; ?>
 
+<?php
+$tahun = date('Y');
+$tahun2 = date('Y', strtotime('-1 year'));
+$tahun3 = date('Y', strtotime('-2 year'));
+?>
+
 <div class="content-body">
   <div class="container-fluid">
     <div class="row page-titles mx-0">
@@ -56,19 +62,19 @@
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">SISA TAHUN 1 (2021)</label>
+                    <label class="col-sm-3 col-form-label">SISA TAHUN 1 (<?= $tahun3 ?>)</label>
                     <div class="col-sm-9">
                       <input type="number" class="form-control" name="sisa1" id="sisa1">
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">SISA TAHUN 2 (2022)</label>
+                    <label class="col-sm-3 col-form-label">SISA TAHUN 2 (<?= $tahun2 ?>)</label>
                     <div class="col-sm-9">
                       <input type="number" class="form-control" name="sisa2" id="sisa2">
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">JATAH TAHUN 3 (2023)</label>
+                    <label class="col-sm-3 col-form-label">JATAH TAHUN 3 (<?= $tahun ?>)</label>
                     <div class="col-sm-9">
                       <input type="number" class="form-control" name="sisa3" id="sisa3">
                     </div>

@@ -1,5 +1,11 @@
 <?php require APPROOT . '/views/layouts/header.php'; ?>
 
+<?php
+$tahun = date('Y');
+$tahun2 = date('Y', strtotime('-1 year'));
+$tahun3 = date('Y', strtotime('-2 year'));
+?>
+
 <div class="content-body">
   <div class="container-fluid">
     <!-- Add Project -->
@@ -34,9 +40,9 @@
                     <th>No</th>
                     <th>NIP</th>
                     <th>Nama</th>
-                    <th>Sisa Tahun 2021</th>
-                    <th>Sisa Tahun 2022</th>
-                    <th>Jatah Tahun 2023</th>
+                    <th>Sisa Tahun <?= $tahun3 ?></th>
+                    <th>Sisa Tahun <?= $tahun2 ?></th>
+                    <th>Jatah Tahun <?= $tahun ?></th>
                     <th>Action</th>
                   </tr>
                 </thead>
