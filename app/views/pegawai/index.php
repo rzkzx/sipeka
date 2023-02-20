@@ -23,6 +23,93 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
+            <h4 class="card-title">Data Ketua</h4>
+            <?php
+            if (Middleware::admin()) {
+              echo '<button class="btn btn-info" data-toggle="modal" data-target="#modalKetuaUpdate">Ganti Ketua<span class="btn-icon-right"><i class="fa fa-user"></i></span></button>';
+            }
+            ?>
+          </div>
+          <div class="card-body pb-2">
+            <?php
+            if ($data['ketua']) {
+            ?>
+              <div class="profile-personal-info row" style="font-size:1rem;">
+                <div class="col-lg-1 mb-3">
+                  <div class="row mb-2">
+                    <div class="col-sm-9 col-7">
+                      <img src="<?= URLROOT ?>/assets/images/pegawai/<?= $data['ketua']->foto ?>" width="100" style="object-fit:cover;border-radius:5px;" alt="" srcset="">
+                    </div>
+                  </div>
+                </div>
+                <div class="row col-lg-11 col-md-12">
+                  <div class="col-5">
+                    <div class="row mb-2">
+                      <div class="col-sm-3 col-5">
+                        <h5 class="f-w-500">NIP <span class="pull-right">:</span>
+                        </h5>
+                      </div>
+                      <div class="col-sm-9 col-7"><span><?= $data['ketua']->nip ?></span>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col-sm-3 col-5">
+                        <h5 class="f-w-500">Nama <span class="pull-right">:</span>
+                        </h5>
+                      </div>
+                      <div class="col-sm-9 col-7"><span><?= $data['ketua']->nama ?></span>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col-sm-3 col-5">
+                        <h5 class="f-w-500">Pangkat <span class="pull-right">:</span>
+                        </h5>
+                      </div>
+                      <div class="col-sm-9 col-7"><span><?= $data['ketua']->pangkat ?></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-7">
+                    <div class="row mb-2">
+                      <div class="col-sm-3 col-5">
+                        <h5 class="f-w-500">Jabatan <span class="pull-right">:</span></h5>
+                      </div>
+                      <div class="col-sm-9 col-7"><span><?= $data['ketua']->jabatan ?></span>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col-sm-3 col-5">
+                        <h5 class="f-w-500">Ruangan <span class="pull-right">:</span>
+                        </h5>
+                      </div>
+                      <div class="col-sm-9 col-7"><span><?= $data['ketua']->ruangan ?></span>
+                      </div>
+                    </div>
+                    <div class="row mb-2">
+                      <div class="col-sm-3 col-5">
+                        <h5 class="f-w-500">Masa Kerja <span class="pull-right">:</span></h5>
+                      </div>
+                      <div class="col-sm-9 col-7"><span><?= $data['ketua']->masa_kerja ?> Tahun</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <?php
+            } else {
+            ?>
+              <div class="row justify-content-between align-items-center m-0">
+                <h4 class="text-danger">Data Ketua belum ditentukan</h4>
+              </div>
+            <?php
+            }
+            ?>
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
             <h4 class="card-title"><?= $data['title'] ?></h4>
             <a href="<?= URLROOT ?>/pegawai/add" type="button" class="btn btn-primary">Tambah Pegawai <span class="btn-icon-right"><i class="fa fa-plus"></i></span></a>
           </div>
@@ -73,6 +160,47 @@
 
   </div>
 </div>
+
+<?php
+if (Middleware::admin()) {
+?>
+  <!-- Modal Validasi -->
+  <div class="modal fade" id="modalKetuaUpdate">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ganti Ketua</h5>
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+          </button>
+        </div>
+        <form action="<?= URLROOT ?>/pegawai/updateKetua/" method="post">
+          <div class="modal-body">
+            <input type="hidden" name="id" id="id_validasi">
+            <div class="form-row">
+              <div class="form-group col-md-12">
+                <label>Pilih Ketua</label>
+                <select class="form-control default-select" name="nip_ketua" id="nip_ketua" tabindex="-98" required>
+                  <option value="" disabled selected>- Pilih -</option>
+                  <?php
+                  foreach ($data['pegawai'] as $pegawai) {
+                    echo '<option value="' . $pegawai->nip . '">' . $pegawai->nama . ' / ' . $pegawai->nip . '</option>';
+                  }
+                  ?>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger light" data-dismiss="modal">Batal</button>
+            <button type="submit" class="btn btn-primary">Terapkan Ketua</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<?php
+}
+?>
 
 <?php require APPROOT . '/views/layouts/footer.php'; ?>
 

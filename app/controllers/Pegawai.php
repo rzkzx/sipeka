@@ -15,11 +15,13 @@ class Pegawai extends Controller
   public function index()
   {
     $pegawai = $this->pegawaiModel->get();
+    $ketua = $this->pegawaiModel->getKetua();
 
     $data = [
       'title' => 'Data Pegawai',
       'menu' => 'Data Pegawai',
-      'pegawai' => $pegawai
+      'pegawai' => $pegawai,
+      'ketua' => $ketua
     ];
 
     $this->view('pegawai/index', $data);
@@ -114,6 +116,34 @@ class Pegawai extends Controller
         setFlash('Berhasil menghapus data pegawai', 'success');
       } else {
         setFlash('Gagal menghapus data pegawai', 'danger');
+      }
+    } else {
+      return redirect('pegawai');
+    }
+  }
+
+  public function updateKetua()
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      if (Middleware::admin()) {
+        $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+        //validate error free
+        if (empty($_POST['nip_ketua'])) {
+          //load view with error msg
+          setFlash('Form input tidak boleh kosong', 'danger');
+          return redirect('pegawai');
+        } else {
+          //send data update to model
+          if ($this->pegawaiModel->updateKetua($_POST)) {
+            setFlash('Berhasil memperbarui data ketua', 'success');
+            return redirect('pegawai');
+          } else {
+            setFlash('Gagal memperbarui data ketua', 'danger');
+            return redirect('pegawai');
+          }
+        }
+      } else {
+        return redirect('pegawai');
       }
     } else {
       return redirect('pegawai');

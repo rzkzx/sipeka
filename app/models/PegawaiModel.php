@@ -26,6 +26,23 @@ class PegawaiModel
     return $result;
   }
 
+  public function getKetua()
+  {
+    $this->db->query('SELECT * FROM ' . $this->table_users . ' WHERE role = :role');
+    $this->db->bind('role', 'ketua');
+    $row = $this->db->single();
+
+    if ($row) {
+      $this->db->query('SELECT * FROM ' . $this->table . ' WHERE nip = :nip');
+      $this->db->bind('nip', $row->nip_pegawai);
+      $row = $this->db->single();
+
+      return $row;
+    } else {
+      return 0;
+    }
+  }
+
   public function getById($id)
   {
     $this->db->query('SELECT * FROM ' . $this->table . ' WHERE id = :id');
@@ -302,5 +319,29 @@ class PegawaiModel
     $result = $this->db->resultSet();
 
     return $result;
+  }
+
+  public function updateKetua($data)
+  {
+    $ketua = $this->getKetua();
+    if ($ketua) {
+      $query = "UPDATE " . $this->table_users . " SET role=:role WHERE nip_pegawai=:nip";
+      $this->db->query($query);
+      $this->db->bind('nip', $ketua->nip);
+      $this->db->bind('role', 'user');
+      $this->db->execute();
+    }
+
+
+    $query = "UPDATE " . $this->table_users . " SET role=:role WHERE nip_pegawai=:nip";
+    $this->db->query($query);
+    $this->db->bind('nip', $data['nip_ketua']);
+    $this->db->bind('role', 'ketua');
+
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }
