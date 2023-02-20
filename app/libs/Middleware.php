@@ -9,6 +9,14 @@ class Middleware extends Controller
     return false;
   }
 
+  public static function ketua()
+  {
+    if ($_SESSION['role'] == 'ketua') {
+      return true;
+    }
+    return false;
+  }
+
   public static function isLoggedIn()
   {
     if (isset($_SESSION['user_id'])) {

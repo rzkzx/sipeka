@@ -120,12 +120,12 @@ class CutiModel
     }
   }
 
-  public function validasi($data, $id)
+  public function validasiketua($data, $id)
   {
-    $query = "UPDATE " . $this->table . " SET status=:status WHERE id=:id";
+    $query = "UPDATE " . $this->table . " SET validasi_ketua=:validasi_ketua WHERE id=:id";
     $this->db->query($query);
     $this->db->bind('id', $id);
-    $this->db->bind('status', $data['status']);
+    $this->db->bind('validasi_ketua', $data['status']);
     $this->db->execute();
 
     //update jatah cuti
@@ -148,6 +148,20 @@ class CutiModel
     $this->db->bind('sisa2', $sisa2);
     $this->db->bind('sisa3', $sisa3);
     $this->db->bind('totalcuti', $totalcuti);
+    if ($this->db->execute()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  public function validasiadmin($data, $id)
+  {
+    $query = "UPDATE " . $this->table . " SET validasi_admin=:validasi_admin WHERE id=:id";
+    $this->db->query($query);
+    $this->db->bind('id', $id);
+    $this->db->bind('validasi_admin', $data['status']);
+
     if ($this->db->execute()) {
       return true;
     } else {

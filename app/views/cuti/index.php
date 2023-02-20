@@ -34,9 +34,9 @@
                     <th>Tanggal</th>
                     <th>Nama</th>
                     <th>NIP</th>
-                    <th>Kode Cuti</th>
                     <th>Lama Cuti</th>
-                    <th>Status</th>
+                    <th>Validasi Ketua</th>
+                    <th>Validasi Admin</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -44,12 +44,20 @@
                   <?php
                   $no = 1;
                   foreach ($data['cuti'] as $cuti) {
-                    if ($cuti->status == 'DITERIMA') {
-                      $badge = 'success';
-                    } elseif ($cuti->status == 'DITOLAK') {
-                      $badge = 'danger';
+                    if ($cuti->validasi_ketua == 'DITERIMA') {
+                      $badge_ketua = 'success';
+                    } elseif ($cuti->validasi_ketua == 'DITOLAK') {
+                      $badge_ketua = 'danger';
                     } else {
-                      $badge = 'warning';
+                      $badge_ketua = 'warning';
+                    }
+
+                    if ($cuti->validasi_admin == 'DITERIMA') {
+                      $badge_admin = 'success';
+                    } elseif ($cuti->validasi_admin == 'DITOLAK') {
+                      $badge_admin = 'danger';
+                    } else {
+                      $badge_admin = 'warning';
                     }
                   ?>
                     <tr>
@@ -57,16 +65,34 @@
                       <td><?= dateID($cuti->tanggal) ?></td>
                       <td><?= $cuti->nama ?></td>
                       <td><?= $cuti->nip ?></td>
-                      <td><?= $cuti->kodecuti ?></td>
                       <td><?= $cuti->lamacuti ?> Hari</td>
                       <td>
                         <?php
-                        if ($cuti->status == 'USULAN') {
+                        if ($cuti->validasi_ketua == 'USULAN') {
+                          if (Middleware::ketua()) {
                         ?>
-                          <button class="btn btn-warning shadow btn-xs text-uppercase" id="btnValidasi" data-toggle="modal" data-id="<?= $cuti->id ?>" data-target="#validasiModal"><i class="fa fa-check-square"></i> Validasi</button>
+                            <button class="btn btn-warning shadow btn-xs text-uppercase" id="btnValidasi" data-toggle="modal" data-val="ketua" data-id="<?= $cuti->id ?>" data-target="#validasiModal"><i class="fa fa-check-square"></i> Validasi</button>
                         <?php
+                          } else {
+                            echo '<span class="badge light badge-' . $badge_ketua . '">' . $cuti->validasi_ketua . '</span>';
+                          }
                         } else {
-                          echo '<span class="badge light badge-' . $badge . '">' . $cuti->status . '</span>';
+                          echo '<span class="badge light badge-' . $badge_ketua . '">' . $cuti->validasi_ketua . '</span>';
+                        }
+                        ?>
+                      </td>
+                      <td>
+                        <?php
+                        if ($cuti->validasi_admin == 'USULAN') {
+                          if (Middleware::admin()) {
+                        ?>
+                            <button class="btn btn-warning shadow btn-xs text-uppercase" id="btnValidasi" data-toggle="modal" data-val="admin" data-id="<?= $cuti->id ?>" data-target="#validasiModal"><i class="fa fa-check-square"></i> Validasi</button>
+                        <?php
+                          } else {
+                            echo '<span class="badge light badge-' . $badge_admin . '">' . $cuti->validasi_admin . '</span>';
+                          }
+                        } else {
+                          echo '<span class="badge light badge-' . $badge_admin . '">' . $cuti->validasi_admin . '</span>';
                         }
                         ?>
 
@@ -75,11 +101,11 @@
                         <div class="d-flex">
                           <a href="<?= URLROOT ?>/cuti/detail/<?= $cuti->id ?>" class="btn btn-info shadow btn-xs sharp mr-1"><i class="fa fa-eye"></i></a>
                           <?php
-                          if ($cuti->status == 'USULAN') {
+                          if ($cuti->validasi_ketua == 'USULAN' && $cuti->validasi_admin == 'USULAN') {
                           ?>
                             <button type="button" class="btn btn-primary shadow btn-xs sharp mr-1" id="btnUpdate" data-toggle="modal" data-id="<?= $cuti->id ?>" data-target="#exampleModalpopover"><i class="fa fa-pencil"></i></button>
                           <?php
-                          } elseif ($cuti->status == 'DITERIMA') {
+                          } elseif ($cuti->validasi_ketua == 'DITERIMA' && $cuti->validasi_admin == 'DITERIMA') {
                           ?>
                             <a href="<?= URLROOT ?>/cuti/surat/<?= $cuti->id ?>" target="_blank" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-envelope-o"></i></a>
                           <?php
@@ -224,6 +250,7 @@
 
     $(document).delegate("#btnValidasi", "click", function() {
       var id = $(this).attr('data-id');
+      var val = $(this).attr('data-val');
 
       // Ajax config
       $.ajax({
@@ -237,7 +264,7 @@
         },
         success: function(data) { //once the request successfully process to the server side it will return result here
           data = JSON.parse(data);
-          $('#validasi_form').attr('action', '<?= URLROOT ?>/cuti/validasi/' + data.id);
+          $('#validasi_form').attr('action', '<?= URLROOT ?>/cuti/validasi' + val + '/' + data.id);
           $("#validasi_form").find('#kodecuti').val(data.kodecuti);
           $("#validasi_form").find('#id_validasi').val(data.id);
           $("#validasi_form").find('#nip').val(data.nip);

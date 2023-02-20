@@ -124,7 +124,7 @@ class Cuti extends Controller
     }
   }
 
-  public function validasi($id = '')
+  public function validasiadmin($id = '')
   {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
@@ -135,7 +135,30 @@ class Cuti extends Controller
         return redirect('cuti');
       } else {
         //send data update to model
-        if ($this->cutiModel->validasi($_POST, $id)) {
+        if ($this->cutiModel->validasiadmin($_POST, $id)) {
+          setFlash('Pengajuan Cuti berhasil divalidasi.', 'success');
+          return redirect('cuti');
+        } else {
+          die('something went wrong');
+        }
+      }
+    } else {
+      return redirect('cuti');
+    }
+  }
+
+  public function validasiketua($id = '')
+  {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+      //validate error free
+      if (empty($_POST['status']) || empty($_POST['nip'])) {
+        //load view with error msg
+        setFlash('Form input tidak boleh kosong', 'danger');
+        return redirect('cuti');
+      } else {
+        //send data update to model
+        if ($this->cutiModel->validasiketua($_POST, $id)) {
           setFlash('Pengajuan Cuti berhasil divalidasi.', 'success');
           return redirect('cuti');
         } else {
